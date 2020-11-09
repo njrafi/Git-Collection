@@ -5,6 +5,7 @@ import { Redirect, Route, Switch } from "react-router";
 import Repos from "./Repos/Repos";
 import AuthContainer from "./AuthContainer/AuthContainer";
 import { connect } from "react-redux";
+import Collections from "./Collections/Collections";
 
 class App extends Component {
 	render() {
@@ -12,6 +13,7 @@ class App extends Component {
 			<Switch>
 				<Route path="/login" component={AuthContainer} />
 				<Route path="/repos" component={Repos} />
+				<Route path="/collections" component={Collections} />
 				<Route path="/" component={Home} />
 				<Route render={() => <h1>Are you lost?</h1>} />
 			</Switch>

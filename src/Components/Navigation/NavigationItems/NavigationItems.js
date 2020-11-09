@@ -8,6 +8,7 @@ class NavigationItems extends Component {
 		let navBar = (
 			<ul className={styles.NavigationItems}>
 				<NavigationItem link="/">Home</NavigationItem>
+				<NavigationItem link="/collections">Collections</NavigationItem>
 				<NavigationItem link="/repos">My repos</NavigationItem>
 				<NavigationItem link="/login">Logout</NavigationItem>
 			</ul>
