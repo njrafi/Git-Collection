@@ -1,9 +1,10 @@
-import logo from "./logo.svg";
 import Button from "../Components/UI/Button/Button";
 import SimpleCard from "../Components/UI/SimpleCard/SimpleCard";
 import { Component } from "react";
-import Toolbar from "../Components/Navigation/Toolbar/Toolbar";
 import Layout from "../Components/Layout/Layout";
+import Home from "./Home/Home";
+import { Route, Switch } from "react-router";
+import Repos from "./Repos/Repos";
 
 class App extends Component {
 	state = {
@@ -44,7 +45,16 @@ class App extends Component {
 				</SimpleCard>
 			);
 
-		return (<Layout>{card}</Layout>);
+		return (
+			<Layout>
+				<Switch>
+					<Route path="/login" render={() => <div>{card} </div>} />
+					<Route path="/repos" component={Repos} />
+					<Route path="/" component={Home} />
+					<Route render={() => <h1>Are you lost?</h1>} />
+				</Switch>
+			</Layout>
+		);
 	}
 }
 
