@@ -1,12 +1,20 @@
+import { connect } from "react-redux";
+import RepoCard from "../../Components/RepoCard/RepoCard";
 const { Component } = require("react");
-const {
-	default: SimpleCard,
-} = require("../../Components/UI/SimpleCard/SimpleCard");
 
 class Repos extends Component {
 	render() {
-		return <SimpleCard>Repos</SimpleCard>;
+		let repoCards = this.props.repos.map((repo) => {
+			return <RepoCard repo={repo} />;
+		});
+
+		return repoCards;
 	}
 }
+const mapStateToProps = (state) => {
+	return {
+		repos: state.collectionReducer.repos,
+	};
+};
 
-export default Repos;
+export default connect(mapStateToProps, null)(Repos);
