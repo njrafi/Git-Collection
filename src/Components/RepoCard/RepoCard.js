@@ -54,7 +54,12 @@ class RepoCard extends Component {
 
 		return (
 			<SimpleCard>
-				<div>name: {this.props.repo.name}</div>
+				<div>
+					<b>name:</b> {this.props.repo.name}
+				</div>
+				<div>
+					<b>Occupied:</b> {this.props.repo.occupied ? "Yes" : "No"}
+				</div>
 				{expandedSection}
 			</SimpleCard>
 		);
