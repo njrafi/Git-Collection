@@ -19,11 +19,7 @@ class Repos extends Component {
 			</Button>
 		);
 
-		return (
-			<div>
-				{repoCards} {updateButton}
-			</div>
-		);
+		return <div>{repoCards}</div>;
 	}
 }
 const mapStateToProps = (state) => {
