@@ -19,7 +19,14 @@ class Collections extends Component {
 				<SimpleCard>Collections</SimpleCard>
 				{collectionCards}
 				<div style={{ textAlign: "center" }}>
-					<Button variant="contained" color="primary" size="large">
+					<Button
+						variant="contained"
+						color="primary"
+						size="large"
+						onClick={() => {
+							this.props.history.push("collections/create");
+						}}
+					>
 						Add New Collection
 					</Button>
 				</div>
