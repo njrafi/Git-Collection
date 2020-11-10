@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
 import Button from "../../Components/UI/Button/Button";
+import Spinner from "../../Components/UI/Spinner/Spinner";
 import * as actionCreators from "../../store/actions/index";
 const { Component } = require("react");
 const {
@@ -26,6 +27,14 @@ class AuthContainer extends Component {
 					</Button>
 				</SimpleCard>
 			);
+
+		if (this.props.apiCallPending)
+			card = (
+				<SimpleCard>
+					<Spinner />
+				</SimpleCard>
+			);
+
 		return card;
 	}
 }
@@ -33,13 +42,14 @@ class AuthContainer extends Component {
 const mapStateToProps = (state) => {
 	return {
 		user: state.authReducer.user,
+		apiCallPending: state.authReducer.pending,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		login: (userId) => dispatch(actionCreators.login(userId)),
-		logout: () => dispatch(actionCreators.logout()),
+		login: (userId) => dispatch(actionCreators.loginAsync(userId)),
+		logout: () => dispatch(actionCreators.logoutAsync()),
 	};
 };
 

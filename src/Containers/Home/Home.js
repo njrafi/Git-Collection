@@ -37,11 +37,5 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		login: (userId) => dispatch(actionCreators.login(userId)),
-		logout: () => dispatch(actionCreators.logout()),
-	};
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, null)(Home);

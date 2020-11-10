@@ -12,6 +12,7 @@ const dummyUser = {
 
 const initialState = {
 	user: null,
+	pending: false,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -22,9 +23,14 @@ const authReducer = (state = initialState, action) => {
 				...dummyUser,
 				id: action.userId,
 			};
+			newState.pending = false;
 			break;
 		case actionTypes.LOGOUT:
 			newState.user = null;
+			newState.pending = false;
+			break;
+		case actionTypes.PENDING:
+			newState.pending = true;
 			break;
 		default:
 	}

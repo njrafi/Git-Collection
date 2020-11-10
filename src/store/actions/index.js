@@ -1,1 +1,1 @@
-export { login, logout } from "./auth";
+export { loginAsync, logoutAsync } from "./auth";

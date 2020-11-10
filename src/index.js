@@ -8,6 +8,7 @@ import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import authReducer from "./store/reducers/auth";
 import collectionReducer from "./store/reducers/collection";
 import { Provider } from "react-redux";
+import thunk from "redux-thunk";
 
 const rootReducers = combineReducers({
 	authReducer: authReducer,
@@ -29,7 +30,7 @@ const composeEnhancers =
 	window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true }) || compose;
 const store = createStore(
 	rootReducers,
-	composeEnhancers(applyMiddleware(logger))
+	composeEnhancers(applyMiddleware(logger, thunk))
 );
 
 ReactDOM.render(
