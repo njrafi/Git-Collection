@@ -1,3 +1,4 @@
+import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import * as actionCreators from "../../store/actions/index";
 const { Component } = require("react");
@@ -17,6 +18,11 @@ class Collections extends Component {
 			<div>
 				<SimpleCard>Collections</SimpleCard>
 				{collectionCards}
+				<div style={{ textAlign: "center" }}>
+					<Button variant="contained" color="primary" size="large">
+						Add New Collection
+					</Button>
+				</div>
 			</div>
 		);
 	}
