@@ -73,7 +73,7 @@ class CollectionData extends Component {
 			updatedCollectionForm[formKey].validation
 		);
 		updatedCollectionForm[formKey].touched = true;
-		let formIsValid = true;
+		let formIsValid = this.state.addedRepos.length > 0;
 		for (let key in updatedCollectionForm)
 			formIsValid = formIsValid && updatedCollectionForm[key].valid;
 
@@ -93,6 +93,7 @@ class CollectionData extends Component {
 		this.setState({
 			availableRepos: availableRepos,
 			addedRepos: addedRepos,
+			formIsValid: this.state.formIsValid && addedRepos.length > 0,
 		});
 	};
 
@@ -104,6 +105,7 @@ class CollectionData extends Component {
 		this.setState({
 			availableRepos: availableRepos,
 			addedRepos: addedRepos,
+			formIsValid: this.state.formIsValid && addedRepos.length > 0,
 		});
 	};
 
