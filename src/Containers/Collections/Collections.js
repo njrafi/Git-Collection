@@ -16,9 +16,8 @@ class Collections extends Component {
 		});
 		return (
 			<div>
-				<SimpleCard>Collections</SimpleCard>
 				{collectionCards}
-				<div style={{ textAlign: "center" }}>
+				<div style={{ textAlign: "center", marginBottom: "30px" }}>
 					<Button
 						variant="contained"
 						color="primary"

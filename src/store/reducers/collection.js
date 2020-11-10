@@ -56,7 +56,7 @@ const dummyCollection1 = {
 	id: 1,
 	name: "DummyCollection1",
 	type: "DummyType1",
-	createdAt: 1605019702,
+	createdAt: 1605019702000,
 	repos: [dummyRepo1, dummyRepo2],
 };
 
@@ -64,7 +64,7 @@ const dummyCollection2 = {
 	id: 2,
 	name: "DummyCollection2",
 	type: "DummyType2",
-	createdAt: 1605019702,
+	createdAt: 1605019702000,
 	repos: [dummyRepo3],
 };
 
@@ -79,12 +79,14 @@ const collectionReducer = (state = initialState, action) => {
 		case actionTypes.UPDATE_REPOSITORIES:
 			newState.repos = [...action.repos];
 			newState.pending = false;
+			SyncOccupiedRepositories(newState);
 			break;
 		case actionTypes.ADD_TO_COLLECTION:
 			newState.collections.push({
 				...action.collection,
 				createdAt: Date.now(),
 			});
+			SyncOccupiedRepositories(newState);
 			break;
 		case actionTypes.COLLECTION_PENDING:
 			newState.pending = true;
@@ -95,6 +97,21 @@ const collectionReducer = (state = initialState, action) => {
 		default:
 	}
 	return newState;
+};
+
+const SyncOccupiedRepositories = (newState) => {
+	const reposInCollection = [];
+	newState.collections.forEach((collection) => {
+		collection.repos.forEach((repo) => {
+			reposInCollection.push(repo.id);
+		});
+	});
+	newState.repos = newState.repos.map((repo) => {
+		reposInCollection.forEach((occupiedRepoId) => {
+			if (occupiedRepoId === repo.id) repo = { ...repo, occupied: true };
+		});
+		return repo;
+	});
 };
 
 export default collectionReducer;

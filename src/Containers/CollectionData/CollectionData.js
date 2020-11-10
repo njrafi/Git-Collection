@@ -46,6 +46,7 @@ class CollectionData extends Component {
 
 	componentDidMount() {
 		let availableRepos = [...this.props.repos];
+		availableRepos = availableRepos.filter((repo) => !repo.occupied);
 		this.setState({
 			availableRepos: availableRepos,
 		});
@@ -83,6 +84,16 @@ class CollectionData extends Component {
 			orderForm: updatedCollectionForm,
 			formIsValid: formIsValid,
 		});
+	};
+
+	submitHandler = () => {
+		this.props.addToCollection({
+			name: this.state.collectionFrom.name.value,
+			type: this.state.collectionFrom.type.value,
+			repos: this.state.addedRepos,
+		});
+		this.props.markRepositoriesAsOccupied(this.state.addedRepos);
+		this.props.history.goBack();
 	};
 
 	moveRepoToCollection = (repo) => {
@@ -176,12 +187,7 @@ class CollectionData extends Component {
 					buttonType="Success"
 					disabled={!this.state.formIsValid}
 					onClick={() => {
-						this.props.addToCollection({
-							name: this.state.collectionFrom.name.value,
-							type: this.state.collectionFrom.type.value,
-							repos: this.state.addedRepos,
-                        });
-                        this.props.history.push("collections")
+						this.submitHandler();
 					}}
 				>
 					Add
@@ -200,6 +206,8 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		addToCollection: (collection) =>
 			dispatch(actionCreators.addToCollection(collection)),
+		markRepositoriesAsOccupied: (repositories) =>
+			dispatch(actionCreators.markRepositoriesAsOccupied(repositories)),
 	};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionData);

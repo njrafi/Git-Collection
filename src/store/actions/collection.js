@@ -26,6 +26,13 @@ export const addToCollection = (collection) => {
 	};
 };
 
+export const markRepositoriesAsOccupied = (repos) => {
+	return {
+		type: actionTypes.MARK_REPOSITORIES_OCCUPIED,
+		repos: repos,
+	};
+};
+
 export const getRepositoriesAsync = (userName) => {
 	let url = `https://api.github.com/users/${userName}/repos`;
 	return (dispatch) => {

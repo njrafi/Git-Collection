@@ -1,2 +1,6 @@
 export { loginAsync, logoutAsync } from "./auth";
-export { getRepositoriesAsync, addToCollection } from "./collection";
+export {
+	getRepositoriesAsync,
+	addToCollection,
+	markRepositoriesAsOccupied,
+} from "./collection";

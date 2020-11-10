@@ -59,7 +59,7 @@ class CollectionCard extends Component {
 				</div>
 				<div>
 					<b>Creation Date: </b>
-					{new Date(this.props.collection.createdAt * 1000).toLocaleDateString(
+					{new Date(this.props.collection.createdAt).toLocaleDateString(
 						"en-US"
 					)}
 				</div>
