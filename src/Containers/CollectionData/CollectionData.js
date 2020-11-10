@@ -1,7 +1,13 @@
 import React, { Component } from "react";
+import { Button as MaterialButton } from "@material-ui/core";
 import Button from "../../Components/UI/Button/Button";
 import Input from "../../Components/UI/Input/Input";
 import styles from "./CollectionData.module.css";
+import * as actionCreators from "../../store/actions/index";
+import { connect } from "react-redux";
+const {
+	default: SimpleCard,
+} = require("../../Components/UI/SimpleCard/SimpleCard");
 
 class CollectionData extends Component {
 	state = {
@@ -33,10 +39,17 @@ class CollectionData extends Component {
 				touched: false,
 			},
 		},
-		addedRepos: null,
-		availableRepos: null,
+		addedRepos: [],
+		availableRepos: [],
 		formIsValid: false,
 	};
+
+	componentDidMount() {
+		let availableRepos = [...this.props.repos];
+		this.setState({
+			availableRepos: availableRepos,
+		});
+	}
 
 	checkValidity(value, rules) {
 		let isValid = true;
@@ -72,6 +85,28 @@ class CollectionData extends Component {
 		});
 	};
 
+	moveRepoToCollection = (repo) => {
+		let availableRepos = [...this.state.availableRepos];
+		availableRepos = availableRepos.filter((r) => r !== repo);
+		let addedRepos = [...this.state?.addedRepos];
+		addedRepos.push(repo);
+		this.setState({
+			availableRepos: availableRepos,
+			addedRepos: addedRepos,
+		});
+	};
+
+	removeRepoFromCollection = (repo) => {
+		let availableRepos = [...this.state?.availableRepos];
+		availableRepos.push(repo);
+		let addedRepos = [...this.state?.addedRepos];
+		addedRepos = addedRepos.filter((r) => r !== repo);
+		this.setState({
+			availableRepos: availableRepos,
+			addedRepos: addedRepos,
+		});
+	};
+
 	render() {
 		const formElementsArray = [];
 		for (let key in this.state.collectionFrom)
@@ -82,17 +117,58 @@ class CollectionData extends Component {
 					changed={(event) => this.inputChangeHandler(event.target.value, key)}
 				/>
 			);
+		const availableRepos = this.state.availableRepos.map((repo, index) => {
+			return (
+				<h4>
+					{index + 1}. {repo.name}{" "}
+					<MaterialButton
+						variant="contained"
+						color="primary"
+						size="small"
+						onClick={() => {
+							this.moveRepoToCollection(repo);
+						}}
+					>
+						add
+					</MaterialButton>
+				</h4>
+			);
+		});
+
+		const addedRepos = this.state.addedRepos.map((repo, index) => {
+			return (
+				<h4>
+					{index + 1}. {repo.name}{" "}
+					<MaterialButton
+						variant="contained"
+						color="secondary"
+						size="small"
+						onClick={() => {
+							this.removeRepoFromCollection(repo);
+						}}
+					>
+						Remove
+					</MaterialButton>
+				</h4>
+			);
+		});
 		return (
 			<div className={styles.CollectionData}>
-				<h4> Enter Collection Info</h4>
+				<h2> Enter Collection Info</h2>
 				<form
 					onSubmit={() => {
 						console.log("Submit Button Clicked");
 					}}
 				>
 					{formElementsArray}
-					<div>Added Repos: </div>
-					<div>Available Repos: </div>
+					<SimpleCard>
+						<h2>Added Repos </h2>
+						{addedRepos}
+					</SimpleCard>
+					<SimpleCard>
+						<h2>Available Repos </h2>
+						{availableRepos}
+					</SimpleCard>
 					<Button buttonType="Success" disabled={!this.state.formIsValid}>
 						Add
 					</Button>
@@ -101,5 +177,15 @@ class CollectionData extends Component {
 		);
 	}
 }
-
-export default CollectionData;
+const mapStateToProps = (state) => {
+	return {
+		repos: state.collectionReducer.repos,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		updateRepositories: (userName) =>
+			dispatch(actionCreators.getRepositoriesAsync(userName)),
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionData);
