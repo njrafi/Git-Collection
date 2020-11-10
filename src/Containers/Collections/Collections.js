@@ -11,8 +11,8 @@ const {
 
 class Collections extends Component {
 	render() {
-		let collectionCards = this.props.collections.map((collection) => {
-			return <CollectionCard collection={collection} />;
+		let collectionCards = this.props.collections.map((collection, index) => {
+			return <CollectionCard key={index} collection={collection} />;
 		});
 		return (
 			<div>

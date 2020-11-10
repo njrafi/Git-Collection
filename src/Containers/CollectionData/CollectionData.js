@@ -121,7 +121,7 @@ class CollectionData extends Component {
 			);
 		const availableRepos = this.state.availableRepos.map((repo, index) => {
 			return (
-				<h4>
+				<h4 key={index}>
 					{index + 1}. {repo.name}{" "}
 					<MaterialButton
 						variant="contained"
@@ -139,7 +139,7 @@ class CollectionData extends Component {
 
 		const addedRepos = this.state.addedRepos.map((repo, index) => {
 			return (
-				<h4>
+				<h4 key={index}>
 					{index + 1}. {repo.name}{" "}
 					<MaterialButton
 						variant="contained"
@@ -157,24 +157,36 @@ class CollectionData extends Component {
 		return (
 			<div className={styles.CollectionData}>
 				<h2> Enter Collection Info</h2>
-				<form
-					onSubmit={() => {
+				{/* <form
+					onSubmit={(event) => {
+						event.preventDefault();
 						console.log("Submit Button Clicked");
 					}}
+				> */}
+				{formElementsArray}
+				<SimpleCard>
+					<h2>Added Repos </h2>
+					{addedRepos}
+				</SimpleCard>
+				<SimpleCard>
+					<h2>Available Repos </h2>
+					{availableRepos}
+				</SimpleCard>
+				<Button
+					buttonType="Success"
+					disabled={!this.state.formIsValid}
+					onClick={() => {
+						this.props.addToCollection({
+							name: this.state.collectionFrom.name.value,
+							type: this.state.collectionFrom.type.value,
+							repos: this.state.addedRepos,
+                        });
+                        this.props.history.push("collections")
+					}}
 				>
-					{formElementsArray}
-					<SimpleCard>
-						<h2>Added Repos </h2>
-						{addedRepos}
-					</SimpleCard>
-					<SimpleCard>
-						<h2>Available Repos </h2>
-						{availableRepos}
-					</SimpleCard>
-					<Button buttonType="Success" disabled={!this.state.formIsValid}>
-						Add
-					</Button>
-				</form>
+					Add
+				</Button>
+				{/* </form> */}
 			</div>
 		);
 	}
@@ -186,8 +198,8 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
 	return {
-		updateRepositories: (userName) =>
-			dispatch(actionCreators.getRepositoriesAsync(userName)),
+		addToCollection: (collection) =>
+			dispatch(actionCreators.addToCollection(collection)),
 	};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionData);

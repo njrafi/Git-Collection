@@ -19,6 +19,13 @@ export const apiCallFailed = () => {
 	};
 };
 
+export const addToCollection = (collection) => {
+	return {
+		type: actionTypes.ADD_TO_COLLECTION,
+		collection: collection,
+	};
+};
+
 export const getRepositoriesAsync = (userName) => {
 	let url = `https://api.github.com/users/${userName}/repos`;
 	return (dispatch) => {

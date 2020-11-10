@@ -80,6 +80,12 @@ const collectionReducer = (state = initialState, action) => {
 			newState.repos = [...action.repos];
 			newState.pending = false;
 			break;
+		case actionTypes.ADD_TO_COLLECTION:
+			newState.collections.push({
+				...action.collection,
+				createdAt: Date.now(),
+			});
+			break;
 		case actionTypes.COLLECTION_PENDING:
 			newState.pending = true;
 			break;

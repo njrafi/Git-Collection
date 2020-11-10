@@ -6,8 +6,8 @@ const { Component } = require("react");
 
 class Repos extends Component {
 	render() {
-		let repoCards = this.props.repos.map((repo) => {
-			return <RepoCard repo={repo} />;
+		let repoCards = this.props.repos.map((repo, index) => {
+			return <RepoCard key={index} repo={repo} />;
 		});
 
 		let updateButton = (
