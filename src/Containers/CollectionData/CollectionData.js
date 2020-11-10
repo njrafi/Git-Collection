@@ -92,7 +92,6 @@ class CollectionData extends Component {
 			type: this.state.collectionFrom.type.value,
 			repos: this.state.addedRepos,
 		});
-		this.props.markRepositoriesAsOccupied(this.state.addedRepos);
 		this.props.history.goBack();
 	};
 
@@ -206,8 +205,6 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		addToCollection: (collection) =>
 			dispatch(actionCreators.addToCollection(collection)),
-		markRepositoriesAsOccupied: (repositories) =>
-			dispatch(actionCreators.markRepositoriesAsOccupied(repositories)),
 	};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionData);
