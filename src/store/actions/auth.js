@@ -20,12 +20,14 @@ export const apiCallPending = () => {
 };
 
 export const loginAsync = (userName) => {
-	userName = "njrafi";
 	let url = `https://api.github.com/users/${userName}`;
 	return (dispatch) => {
 		dispatch(apiCallPending());
 		fetch(url)
-			.then((res) => res.json())
+			.then((res) => {
+				if (res.status != 200) throw new Error("Login Failed");
+				return res.json();
+			})
 			.then((res) => {
 				if (res.error) {
 					throw res.error;
@@ -34,8 +36,8 @@ export const loginAsync = (userName) => {
 				return res;
 			})
 			.catch((error) => {
-				console.error(error);
-				dispatch(logout);
+				console.log(error);
+				dispatch(logout());
 			});
 	};
 };
@@ -45,6 +47,6 @@ export const logoutAsync = () => {
 		dispatch(apiCallPending());
 		setTimeout(() => {
 			dispatch(logout());
-		}, 3000);
+		}, 500);
 	};
 };
