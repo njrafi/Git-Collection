@@ -1,3 +1,7 @@
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
-export const PENDING = "PENDING";
+export const AUTH_PEDNING = "AUTH_PEDNING";
+
+export const UPDATE_REPOSITORIES = "UPDATE_REPOSITORIES";
+export const COLLECTION_PENDING = "COLLECTION_PENDING";
+export const COLLECTION_FAILED = "COLLECTION_FAILED";

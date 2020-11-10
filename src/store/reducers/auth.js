@@ -26,7 +26,7 @@ const authReducer = (state = initialState, action) => {
 			newState.user = null;
 			newState.pending = false;
 			break;
-		case actionTypes.PENDING:
+		case actionTypes.AUTH_PEDNING:
 			newState.pending = true;
 			break;
 		default:

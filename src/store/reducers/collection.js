@@ -74,7 +74,21 @@ const initialState = {
 };
 
 const collectionReducer = (state = initialState, action) => {
-	return state;
+	const newState = { ...state };
+	switch (action.type) {
+		case actionTypes.UPDATE_REPOSITORIES:
+			newState.repos = [...action.repos];
+			newState.pending = false;
+			break;
+		case actionTypes.COLLECTION_PENDING:
+			newState.pending = true;
+			break;
+		case actionTypes.COLLECTION_FAILED:
+			newState.pending = false;
+			break;
+		default:
+	}
+	return newState;
 };
 
 export default collectionReducer;

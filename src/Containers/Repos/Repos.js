@@ -1,5 +1,7 @@
 import { connect } from "react-redux";
 import RepoCard from "../../Components/RepoCard/RepoCard";
+import Button from "../../Components/UI/Button/Button";
+import * as actionCreators from "../../store/actions/index";
 const { Component } = require("react");
 
 class Repos extends Component {
@@ -8,13 +10,32 @@ class Repos extends Component {
 			return <RepoCard repo={repo} />;
 		});
 
-		return repoCards;
+		let updateButton = (
+			<Button
+				buttonType="Success"
+				onClick={() => this.props.updateRepositories(this.props.userName)}
+			>
+				Update
+			</Button>
+		);
+
+		return (
+			<div>
+				{repoCards} {updateButton}
+			</div>
+		);
 	}
 }
 const mapStateToProps = (state) => {
 	return {
 		repos: state.collectionReducer.repos,
+		userName: state.authReducer.user.login,
 	};
 };
-
-export default connect(mapStateToProps, null)(Repos);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		updateRepositories: (userName) =>
+			dispatch(actionCreators.getRepositoriesAsync(userName)),
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Repos);

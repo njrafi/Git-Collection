@@ -58,6 +58,9 @@ class RepoCard extends Component {
 					<b>name:</b> {this.props.repo.name}
 				</div>
 				<div>
+					<b>Language:</b> {this.props.repo.language}
+				</div>
+				<div>
 					<b>Occupied:</b> {this.props.repo.occupied ? "Yes" : "No"}
 				</div>
 				{expandedSection}

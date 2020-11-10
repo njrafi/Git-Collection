@@ -1,4 +1,5 @@
 import * as actionTypes from "./actionTypes";
+import * as actionCreators from "../actions/index";
 
 export const login = (user) => {
 	return {
@@ -15,7 +16,7 @@ export const logout = () => {
 
 export const apiCallPending = () => {
 	return {
-		type: actionTypes.PENDING,
+		type: actionTypes.AUTH_PEDNING,
 	};
 };
 
@@ -33,6 +34,7 @@ export const loginAsync = (userName) => {
 					throw res.error;
 				}
 				dispatch(login(res));
+				dispatch(actionCreators.getRepositoriesAsync(userName));
 				return res;
 			})
 			.catch((error) => {
