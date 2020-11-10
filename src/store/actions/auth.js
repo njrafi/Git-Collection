@@ -1,9 +1,9 @@
 import * as actionTypes from "./actionTypes";
 
-export const login = (userId) => {
+export const login = (user) => {
 	return {
 		type: actionTypes.LOGIN,
-		userId: userId,
+		user: user,
 	};
 };
 
@@ -19,12 +19,24 @@ export const apiCallPending = () => {
 	};
 };
 
-export const loginAsync = (userId) => {
+export const loginAsync = (userName) => {
+	userName = "njrafi";
+	let url = `https://api.github.com/users/${userName}`;
 	return (dispatch) => {
 		dispatch(apiCallPending());
-		setTimeout(() => {
-			dispatch(login(userId));
-		}, 3000);
+		fetch(url)
+			.then((res) => res.json())
+			.then((res) => {
+				if (res.error) {
+					throw res.error;
+				}
+				dispatch(login(res));
+				return res;
+			})
+			.catch((error) => {
+				console.error(error);
+				dispatch(logout);
+			});
 	};
 };
 

@@ -4,10 +4,10 @@ const dummyUser = {
 	id: -1,
 	name: "Kuddus",
 	email: "KuddusBoyati@gmail.com",
-	repos: 23,
+	public_repos: 23,
 	followers: 12,
 	following: 30,
-	avatar: "https://static.toiimg.com/photo/msid-67586673/67586673.jpg",
+	avatar_url: "https://static.toiimg.com/photo/msid-67586673/67586673.jpg",
 };
 
 const initialState = {
@@ -19,10 +19,7 @@ const authReducer = (state = initialState, action) => {
 	const newState = { ...state };
 	switch (action.type) {
 		case actionTypes.LOGIN:
-			newState.user = {
-				...dummyUser,
-				id: action.userId,
-			};
+			newState.user = action.user;
 			newState.pending = false;
 			break;
 		case actionTypes.LOGOUT:
