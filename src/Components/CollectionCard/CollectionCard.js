@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Button from "../UI/Button/Button";
+import { Button, ButtonGroup } from "@material-ui/core";
 const { default: SimpleCard } = require("../UI/SimpleCard/SimpleCard");
 
 class CollectionCard extends Component {
@@ -9,11 +9,25 @@ class CollectionCard extends Component {
 
 	render() {
 		let repos = <div>No Repos</div>;
+		let editAndDeleteButton = (
+			<div style={{ display: "inline-block" }}>
+				<div style={{ marginLeft: "20px", display: "inline-block" }}>
+					<Button variant="contained" color="default" size="small">
+						Edit
+					</Button>
+				</div>
+				<div style={{ marginLeft: "20px", display: "inline-block" }}>
+					<Button variant="contained" color="secondary" size="small">
+						Delete
+					</Button>
+				</div>
+			</div>
+		);
 
 		if (this.props.collection.repos != null)
 			repos = this.props.collection.repos.map((repo) => {
 				return (
-					<div>
+					<div key={repo.id}>
 						<div>
 							<b>Name:</b> {repo.name}
 						</div>
@@ -22,30 +36,38 @@ class CollectionCard extends Component {
 				);
 			});
 		let expandedSection = (
-			<div>
+			<div style={{ marginTop: "20px" }}>
 				<Button
-					buttonType="Danger"
+					variant="contained"
+					color="default"
+					size="small"
 					onClick={() => {
 						this.setState({ isExpanded: false });
 					}}
 				>
 					Hide
 				</Button>
+				{editAndDeleteButton}
+				<br />
+				<br />
 				{repos}
 			</div>
 		);
 
 		if (!this.state.isExpanded)
 			expandedSection = (
-				<div>
+				<div style={{ marginTop: "20px", marginBottom: "20px" }}>
 					<Button
-						buttonType="Success"
+						variant="contained"
+						color="primary"
+						size="small"
 						onClick={() => {
 							this.setState({ isExpanded: true });
 						}}
 					>
 						Expand
 					</Button>
+					{editAndDeleteButton}
 				</div>
 			);
 
