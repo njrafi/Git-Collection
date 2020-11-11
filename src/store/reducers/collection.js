@@ -71,6 +71,7 @@ const dummyCollection2 = {
 const initialState = {
 	collections: [dummyCollection1, dummyCollection2],
 	repos: [dummyRepo1, dummyRepo2, dummyRepo3, dummyRepo4],
+	pending: false,
 };
 
 const collectionReducer = (state = initialState, action) => {
@@ -94,7 +95,10 @@ const collectionReducer = (state = initialState, action) => {
 		case actionTypes.COLLECTION_FAILED:
 			newState.pending = false;
 			break;
+		case actionTypes.COLLECTION_CLEAR:
+			return { ...initialState };
 		default:
+			return state;
 	}
 	return newState;
 };
