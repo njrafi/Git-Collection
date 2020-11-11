@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Button, ButtonGroup } from "@material-ui/core";
+import { connect } from "react-redux";
+import * as actionCreators from "../../store/actions/index";
 const { default: SimpleCard } = require("../UI/SimpleCard/SimpleCard");
 
 class CollectionCard extends Component {
@@ -17,7 +19,14 @@ class CollectionCard extends Component {
 					</Button>
 				</div>
 				<div style={{ marginLeft: "20px", display: "inline-block" }}>
-					<Button variant="contained" color="secondary" size="small">
+					<Button
+						variant="contained"
+						color="secondary"
+						size="small"
+						onClick={() => {
+							this.props.deleteCollection(this.props.collection);
+						}}
+					>
 						Delete
 					</Button>
 				</div>
@@ -93,5 +102,11 @@ class CollectionCard extends Component {
 		);
 	}
 }
+const mapDispatchToProps = (dispatch) => {
+	return {
+		deleteCollection: (collection) =>
+			dispatch(actionCreators.deleteCollection(collection)),
+	};
+};
 
-export default CollectionCard;
+export default connect(null, mapDispatchToProps)(CollectionCard);

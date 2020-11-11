@@ -56,7 +56,7 @@ const dummyCollection1 = {
 	id: 1,
 	name: "DummyCollection1",
 	type: "DummyType1",
-	createdAt: 1605019702000,
+	createdAt: 1605015702000,
 	repos: [dummyRepo1, dummyRepo2],
 };
 
@@ -88,6 +88,12 @@ const collectionReducer = (state = initialState, action) => {
 				createdAt: Date.now(),
 			});
 			SyncOccupiedRepositories(newState);
+			break;
+		case actionTypes.DELETE_COLLECTION:
+			newState.collections = newState.collections.filter((collection) => {
+				return collection.createdAt != action.collection.createdAt;
+			});
+
 			break;
 		case actionTypes.COLLECTION_PENDING:
 			newState.pending = true;

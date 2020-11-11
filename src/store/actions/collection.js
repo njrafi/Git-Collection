@@ -26,6 +26,13 @@ export const addToCollection = (collection) => {
 	};
 };
 
+export const deleteCollection = (collection) => {
+	return {
+		type: actionTypes.DELETE_COLLECTION,
+		collection: collection,
+	};
+};
+
 export const clearCollections = () => {
 	return {
 		type: actionTypes.COLLECTION_CLEAR,
