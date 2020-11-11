@@ -9,11 +9,23 @@ import authReducer from "./store/reducers/auth";
 import collectionReducer from "./store/reducers/collection";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import { PersistGate } from "redux-persist/integration/react";
+import Spinner from "./Components/UI/Spinner/Spinner";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
 const rootReducers = combineReducers({
 	authReducer: authReducer,
 	collectionReducer: collectionReducer,
 });
+
+const persistConfig = {
+	key: "git-collection-root",
+	storage,
+	whitelist: ["authReducer", "collectionReducer"],
+};
+
+const peristedReducer = persistReducer(persistConfig, rootReducers);
 
 const logger = (store) => {
 	return (next) => {
@@ -29,15 +41,18 @@ const logger = (store) => {
 const composeEnhancers =
 	window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true }) || compose;
 const store = createStore(
-	rootReducers,
+	peristedReducer,
 	composeEnhancers(applyMiddleware(logger, thunk))
 );
+const persistor = persistStore(store);
 
 ReactDOM.render(
 	<React.StrictMode>
 		<Provider store={store}>
 			<BrowserRouter>
-				<App />
+				<PersistGate loading={<Spinner />} persistor={persistor}>
+					<App />
+				</PersistGate>
 			</BrowserRouter>
 		</Provider>
 	</React.StrictMode>,

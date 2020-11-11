@@ -26,6 +26,12 @@ export const addToCollection = (collection) => {
 	};
 };
 
+export const clearCollections = () => {
+	return {
+		type: actionTypes.COLLECTION_CLEAR,
+	};
+};
+
 export const getRepositoriesAsync = (userName) => {
 	let url = `https://api.github.com/users/${userName}/repos`;
 	return (dispatch) => {

@@ -49,6 +49,7 @@ export const logoutAsync = () => {
 		dispatch(apiCallPending());
 		setTimeout(() => {
 			dispatch(logout());
+			dispatch(actionCreators.clearCollections());
 		}, 500);
 	};
 };

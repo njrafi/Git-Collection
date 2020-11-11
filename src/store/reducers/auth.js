@@ -23,13 +23,12 @@ const authReducer = (state = initialState, action) => {
 			newState.pending = false;
 			break;
 		case actionTypes.LOGOUT:
-			newState.user = null;
-			newState.pending = false;
-			break;
+			return { ...initialState };
 		case actionTypes.AUTH_PEDNING:
 			newState.pending = true;
 			break;
 		default:
+			return state;
 	}
 	return newState;
 };
