@@ -27,7 +27,7 @@ class NavigationItems extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		isLoggedin: state.authReducer.user != null,
+		isLoggedin: state.authReducer.githubUser != null,
 	};
 };
 

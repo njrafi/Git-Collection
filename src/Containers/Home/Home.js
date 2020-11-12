@@ -18,7 +18,8 @@ class Home extends Component {
 						<b>Total public repos:</b> {this.props.user.public_repos} <br />
 						<b>Followers:</b> {this.props.user.followers} <br />
 						<b>Following:</b> {this.props.user.following} <br />
-                        <br /><br />
+						<br />
+						<br />
 						<img
 							src={this.props.user.avatar_url}
 							alt="User Image"
@@ -33,7 +34,7 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.authReducer.user,
+		user: state.authReducer.githubUser,
 		collections: state.collectionReducer.collections,
 		repos: state.collectionReducer.repos,
 	};

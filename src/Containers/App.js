@@ -14,7 +14,7 @@ class App extends Component {
 			<Switch>
 				<Route path="/login" component={AuthContainer} />
 				<Route path="/repos" component={Repos} />
-                <Route path="/collections/create" component={CollectionData} />
+				<Route path="/collections/create" component={CollectionData} />
 				<Route path="/collections" component={Collections} />
 				<Route path="/" component={Home} />
 				<Route render={() => <h1>Are you lost?</h1>} />
@@ -33,7 +33,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		isLoggedin: state.authReducer.user != null,
+		isLoggedin: state.authReducer.githubUser != null,
 	};
 };
 export default connect(mapStateToProps, null)(App);

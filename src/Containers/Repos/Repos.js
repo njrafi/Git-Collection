@@ -25,7 +25,7 @@ class Repos extends Component {
 const mapStateToProps = (state) => {
 	return {
 		repos: state.collectionReducer.repos,
-		userName: state.authReducer.user.login,
+		userName: state.authReducer.githubUser.login,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

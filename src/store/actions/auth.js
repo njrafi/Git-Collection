@@ -1,10 +1,11 @@
 import * as actionTypes from "./actionTypes";
 import * as actionCreators from "../actions/index";
 
-export const login = (user) => {
+export const login = (githubUser, firebaseUser) => {
 	return {
 		type: actionTypes.LOGIN,
-		user: user,
+		githubUser: githubUser,
+		firebaseUser: firebaseUser,
 	};
 };
 
@@ -20,8 +21,8 @@ export const apiCallPending = () => {
 	};
 };
 
-export const loginAsync = (userName) => {
-	let url = `https://api.github.com/users/${userName}`;
+export const loginAsync = (githubUserName, firebaseUser) => {
+	let url = `https://api.github.com/users/${githubUserName}`;
 	return (dispatch) => {
 		dispatch(apiCallPending());
 		fetch(url)
@@ -33,8 +34,9 @@ export const loginAsync = (userName) => {
 				if (res.error) {
 					throw res.error;
 				}
-				dispatch(login(res));
-				dispatch(actionCreators.getRepositoriesAsync(userName));
+				//TODO: filter specific data of githubUser
+				dispatch(login(res, firebaseUser));
+				dispatch(actionCreators.getRepositoriesAsync(githubUserName));
 				return res;
 			})
 			.catch((error) => {

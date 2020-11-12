@@ -11,7 +11,8 @@ const dummyUser = {
 };
 
 const initialState = {
-	user: null,
+	firebaseUser: null,
+	githubUser: null,
 	pending: false,
 };
 
@@ -19,7 +20,8 @@ const authReducer = (state = initialState, action) => {
 	const newState = { ...state };
 	switch (action.type) {
 		case actionTypes.LOGIN:
-			newState.user = action.user;
+            newState.firebaseUser = action.firebaseUser;
+            newState.githubUser = action.githubUser;
 			newState.pending = false;
 			break;
 		case actionTypes.LOGOUT:

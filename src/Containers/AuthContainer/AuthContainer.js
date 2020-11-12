@@ -3,18 +3,24 @@ import Button from "../../Components/UI/Button/Button";
 import Input from "../../Components/UI/Input/Input";
 import Spinner from "../../Components/UI/Spinner/Spinner";
 import * as actionCreators from "../../store/actions/index";
+import firebase from "firebase";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 const { Component } = require("react");
 const {
 	default: SimpleCard,
 } = require("../../Components/UI/SimpleCard/SimpleCard");
 
+firebase.initializeApp({
+	apiKey: process.env.REACT_APP_API_KEY,
+	authDomain: process.env.REACT_APP_AUTHDOMAIN,
+});
 class AuthContainer extends Component {
 	state = {
 		username: {
 			elementType: "input",
 			elementConfig: {
 				type: "text",
-				placeholder: "username",
+				placeholder: "github username",
 			},
 			value: "",
 			validation: {
@@ -23,7 +29,28 @@ class AuthContainer extends Component {
 			valid: false,
 			touched: false,
 		},
+		firebaseUser: null,
 	};
+	uiConfig = {
+		signInFlow: "popup",
+		signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
+		callbacks: {
+			signInSuccess: () => false,
+		},
+	};
+
+	componentDidMount() {
+		console.log({
+			apiKey: process.env.REACT_APP_API_KEY,
+			authDomain: process.env.REACT_APP_AUTHDOMAIN,
+		});
+		firebase.auth().onAuthStateChanged((firebaseUser) => {
+			console.log("Firebase auth changed");
+			this.setState({
+				firebaseUser: firebaseUser,
+			});
+		});
+	}
 
 	userNameChangeHandler = (value) => {
 		const updatedUserName = { ...this.state.username };
@@ -36,33 +63,58 @@ class AuthContainer extends Component {
 	render() {
 		let card = (
 			<SimpleCard>
-				<div>Please Sign in to continue</div>
-				<Input
-					{...this.state.username}
-					changed={(event) => {
-						this.userNameChangeHandler(event.target.value);
-					}}
-				></Input>
-				<Button
-					buttonType="Success"
-					onClick={() => this.props.login(this.state.username.value)}
-				>
-					Log in
-				</Button>
+				<div style={{ textAlign: "center" }}>
+					<div>Please Select Your Login Provider</div>
+					<StyledFirebaseAuth
+						uiConfig={this.uiConfig}
+						firebaseAuth={firebase.auth()}
+					/>
+				</div>
 			</SimpleCard>
 		);
 
-		if (this.props.user)
+		if (this.state.firebaseUser)
+			card = (
+				<SimpleCard>
+					<div>Please Provide your github username</div>
+					<Input
+						{...this.state.username}
+						changed={(event) => {
+							this.userNameChangeHandler(event.target.value);
+						}}
+					></Input>
+					<Button
+						buttonType="Success"
+						onClick={() =>
+							this.props.login(
+								this.state.username.value,
+								this.state.firebaseUser
+							)
+						}
+					>
+						Log in
+					</Button>
+				</SimpleCard>
+			);
+
+		if (this.props.githubUser) {
 			card = (
 				<SimpleCard>
 					<div>
-						<b>{this.props.user.login}</b>, Logged in
+						<b>{this.props.githubUser.login}</b>, Logged in
 					</div>
-					<Button buttonType="Danger" onClick={() => this.props.logout()}>
+					<Button
+						buttonType="Danger"
+						onClick={() => {
+							firebase.auth().signOut();
+							this.props.logout();
+						}}
+					>
 						Sign out
 					</Button>
 				</SimpleCard>
 			);
+		}
 
 		if (this.props.apiCallPending)
 			card = (
@@ -77,14 +129,15 @@ class AuthContainer extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.authReducer.user,
+		githubUser: state.authReducer.githubUser,
 		apiCallPending: state.authReducer.pending,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		login: (userId) => dispatch(actionCreators.loginAsync(userId)),
+		login: (githubUserName, firebaseUser) =>
+			dispatch(actionCreators.loginAsync(githubUserName, firebaseUser)),
 		logout: () => dispatch(actionCreators.logoutAsync()),
 	};
 };
