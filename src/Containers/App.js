@@ -7,8 +7,15 @@ import AuthContainer from "./AuthContainer/AuthContainer";
 import { connect } from "react-redux";
 import Collections from "./Collections/Collections";
 import CollectionData from "./CollectionData/CollectionData";
-
+import * as actionCreators from "../store/actions/index";
 class App extends Component {
+	componentDidMount() {
+		if (!this.props.dataRefreshed && !this.props.apiCallPending) {
+			console.log("Data refresh called");
+			console.log(this.props.dataRefreshed, this.props.apiCallPending);
+			this.props.refreshData(this.props.userName, this.props.userToken);
+		}
+	}
 	render() {
 		let routes = (
 			<Switch>
@@ -34,6 +41,18 @@ class App extends Component {
 const mapStateToProps = (state) => {
 	return {
 		isLoggedin: state.authReducer.githubUser != null,
+		userName: state.authReducer.githubUser?.login,
+		userToken: state.authReducer.firebaseUser?.uid,
+		dataRefreshed: state.refreshReducer.refreshed,
+		apiCallPending:
+			state.authReducer.pending || state.collectionReducer.pending,
 	};
 };
-export default connect(mapStateToProps, null)(App);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		refreshData: (userName, userToken) =>
+			dispatch(actionCreators.refreshDataAsync(userName, userToken)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

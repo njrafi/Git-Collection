@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import authReducer from "./store/reducers/auth";
+import refreshReducer from "./store/reducers/refresh";
 import collectionReducer from "./store/reducers/collection";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
@@ -17,6 +18,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 const rootReducers = combineReducers({
 	authReducer: authReducer,
 	collectionReducer: collectionReducer,
+	refreshReducer: refreshReducer,
 });
 
 const persistConfig = {

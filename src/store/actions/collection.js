@@ -120,3 +120,26 @@ export const getRepositoriesAsync = (userName) => {
 			});
 	};
 };
+
+export const getCollectionsAsync = (userToken) => {
+	let url = `${process.env.REACT_APP_BACKEND_URL}/collections?userToken=${userToken}`;
+	return (dispatch) => {
+		dispatch(apiCallPending());
+		fetch(url)
+			.then((res) => {
+				if (res.status !== 200) throw new Error("Get Collections Failed");
+				return res.json();
+			})
+			.then((res) => {
+				if (res.error) {
+					throw res.error;
+				}
+				dispatch(updateCollections(res.collections));
+				return res;
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(apiCallFailed());
+			});
+	};
+};

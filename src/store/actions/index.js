@@ -5,4 +5,7 @@ export {
 	addToCollectionAsync,
 	deleteCollection,
 	clearCollections,
+	getCollectionsAsync,
 } from "./collection";
+
+export { refreshDataAsync } from "./refresh";
