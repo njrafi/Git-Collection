@@ -87,11 +87,15 @@ class CollectionData extends Component {
 	};
 
 	submitHandler = () => {
-		this.props.addToCollection({
-			name: this.state.collectionFrom.name.value,
-			type: this.state.collectionFrom.type.value,
-			repos: this.state.addedRepos,
-		});
+		this.props.addToCollection(
+			{
+				name: this.state.collectionFrom.name.value,
+				type: this.state.collectionFrom.type.value,
+				createdAt: Date.now(),
+				repos: this.state.addedRepos,
+			},
+			this.props.userToken
+		);
 		this.props.history.goBack();
 	};
 
@@ -199,12 +203,13 @@ class CollectionData extends Component {
 const mapStateToProps = (state) => {
 	return {
 		repos: state.collectionReducer.repos,
+		userToken: state.authReducer.firebaseUser.uid,
 	};
 };
 const mapDispatchToProps = (dispatch) => {
 	return {
-		addToCollection: (collection) =>
-			dispatch(actionCreators.addToCollection(collection)),
+		addToCollection: (collection, userToken) =>
+			dispatch(actionCreators.addToCollectionAsync(collection, userToken)),
 	};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionData);

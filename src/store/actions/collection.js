@@ -26,13 +26,6 @@ export const apiCallFailed = () => {
 	};
 };
 
-export const addToCollection = (collection) => {
-	return {
-		type: actionTypes.ADD_TO_COLLECTION,
-		collection: collection,
-	};
-};
-
 export const deleteCollection = (collection) => {
 	return {
 		type: actionTypes.DELETE_COLLECTION,
@@ -46,13 +39,46 @@ export const clearCollections = () => {
 	};
 };
 
+export const addToCollectionAsync = (collection, userToken) => {
+	let url = `${process.env.REACT_APP_BACKEND_URL}/collections`;
+	let body = {
+		userToken: userToken,
+		collection: collection,
+	};
+	return (dispatch) => {
+		dispatch(apiCallPending());
+		fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(body),
+		})
+			.then((res) => {
+				if (res.status !== 200) throw new Error("Add to Collection Failed");
+				return res.json();
+			})
+			.then((res) => {
+				if (res.error) {
+					throw res.error;
+				}
+				dispatch(updateCollections(res.collections));
+				return res;
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(apiCallFailed());
+			});
+	};
+};
+
 export const getRepositoriesAsync = (userName) => {
 	let url = `https://api.github.com/users/${userName}/repos`;
 	return (dispatch) => {
 		dispatch(apiCallPending());
 		fetch(url)
 			.then((res) => {
-				if (res.status != 200) throw new Error("Get Repositories Failed");
+				if (res.status !== 200) throw new Error("Get Repositories Failed");
 				return res.json();
 			})
 			.then((res) => {

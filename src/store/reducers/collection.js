@@ -87,13 +87,6 @@ const collectionReducer = (state = initialState, action) => {
 			newState.pending = false;
 			SyncOccupiedRepositories(newState);
 			break;
-		case actionTypes.ADD_TO_COLLECTION:
-			newState.collections.push({
-				...action.collection,
-				createdAt: Date.now(),
-			});
-			SyncOccupiedRepositories(newState);
-			break;
 		case actionTypes.DELETE_COLLECTION:
 			newState.collections = newState.collections.filter((collection) => {
 				return collection.createdAt != action.collection.createdAt;

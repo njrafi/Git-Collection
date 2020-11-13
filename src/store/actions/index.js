@@ -2,7 +2,7 @@ export { loginAsync, logoutAsync } from "./auth";
 export {
 	getRepositoriesAsync,
 	updateCollections,
-	addToCollection,
+	addToCollectionAsync,
 	deleteCollection,
 	clearCollections,
 } from "./collection";

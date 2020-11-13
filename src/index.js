@@ -38,8 +38,10 @@ const logger = (store) => {
 	};
 };
 
-const composeEnhancers =
-	window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true }) || compose;
+let reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+if (reduxDevTools) reduxDevTools = reduxDevTools({ trace: true });
+
+const composeEnhancers = reduxDevTools || compose;
 const store = createStore(
 	peristedReducer,
 	composeEnhancers(applyMiddleware(logger, thunk))
