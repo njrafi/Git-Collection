@@ -26,16 +26,42 @@ export const apiCallFailed = () => {
 	};
 };
 
-export const deleteCollection = (collection) => {
-	return {
-		type: actionTypes.DELETE_COLLECTION,
-		collection: collection,
-	};
-};
-
 export const clearCollections = () => {
 	return {
 		type: actionTypes.COLLECTION_CLEAR,
+	};
+};
+
+export const deleteCollection = (collection, userToken) => {
+	let url = `${process.env.REACT_APP_BACKEND_URL}/collections`;
+	let body = {
+		userToken: userToken,
+		createdAt: collection.createdAt,
+	};
+	return (dispatch) => {
+		dispatch(apiCallPending());
+		fetch(url, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(body),
+		})
+			.then((res) => {
+				if (res.status !== 200) throw new Error("Delete Collection Failed");
+				return res.json();
+			})
+			.then((res) => {
+				if (res.error) {
+					throw res.error;
+				}
+				dispatch(updateCollections(res.collections));
+				return res;
+			})
+			.catch((error) => {
+				console.log(error);
+				dispatch(apiCallFailed());
+			});
 	};
 };
 

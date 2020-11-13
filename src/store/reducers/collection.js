@@ -19,12 +19,6 @@ const collectionReducer = (state = initialState, action) => {
 			newState.pending = false;
 			SyncOccupiedRepositories(newState);
 			break;
-		case actionTypes.DELETE_COLLECTION:
-			newState.collections = newState.collections.filter((collection) => {
-				return collection.createdAt != action.collection.createdAt;
-			});
-
-			break;
 		case actionTypes.COLLECTION_PENDING:
 			newState.pending = true;
 			break;
@@ -47,8 +41,9 @@ const SyncOccupiedRepositories = (newState) => {
 		});
 	});
 	newState.repos = newState.repos.map((repo) => {
+		repo.occupied = false;
 		reposInCollection.forEach((occupiedRepoId) => {
-			if (occupiedRepoId === repo.id) repo = { ...repo, occupied: true };
+			if (occupiedRepoId === repo.id) repo.occupied = true;
 		});
 		return repo;
 	});

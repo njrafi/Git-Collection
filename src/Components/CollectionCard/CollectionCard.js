@@ -24,7 +24,10 @@ class CollectionCard extends Component {
 						color="secondary"
 						size="small"
 						onClick={() => {
-							this.props.deleteCollection(this.props.collection);
+							this.props.deleteCollection(
+								this.props.collection,
+								this.props.userToken
+							);
 						}}
 					>
 						Delete
@@ -102,11 +105,18 @@ class CollectionCard extends Component {
 		);
 	}
 }
-const mapDispatchToProps = (dispatch) => {
+
+const mapStateToProps = (state) => {
 	return {
-		deleteCollection: (collection) =>
-			dispatch(actionCreators.deleteCollection(collection)),
+		userToken: state.authReducer.firebaseUser.uid,
 	};
 };
 
-export default connect(null, mapDispatchToProps)(CollectionCard);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		deleteCollection: (collection, userToken) =>
+			dispatch(actionCreators.deleteCollection(collection, userToken)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionCard);
