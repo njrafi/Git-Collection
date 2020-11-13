@@ -23,11 +23,37 @@ export const apiCallPending = () => {
 
 export const loginAsync = (githubUserName, firebaseUser) => {
 	let url = `https://api.github.com/users/${githubUserName}`;
+	let bakendAuthUrl = `${process.env.REACT_APP_BACKEND_URL}/auth/login`;
+
 	return (dispatch) => {
 		dispatch(apiCallPending());
+
 		fetch(url)
 			.then((res) => {
-				if (res.status != 200) throw new Error("Login Failed");
+				if (res.status !== 200) throw new Error("Login Failed at Github.");
+				return res.json();
+			})
+			.then((res) => {
+				if (res.error) {
+					throw res.error;
+				}
+				let userData = {
+					token: firebaseUser.uid,
+					name: firebaseUser.displayName,
+					email: firebaseUser.email,
+					photoUrl: firebaseUser.photoURL,
+					githubUser: res,
+				};
+				return fetch(bakendAuthUrl, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(userData),
+				});
+			})
+			.then((res) => {
+				if (res.status !== 200) throw new Error("Login Failed at Backend.");
 				return res.json();
 			})
 			.then((res) => {
@@ -35,7 +61,7 @@ export const loginAsync = (githubUserName, firebaseUser) => {
 					throw res.error;
 				}
 				//TODO: filter specific data of githubUser
-				dispatch(login(res, firebaseUser));
+				dispatch(login(res.user.githubUser, firebaseUser));
 				dispatch(actionCreators.getRepositoriesAsync(githubUserName));
 				return res;
 			})
