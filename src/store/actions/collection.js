@@ -7,6 +7,13 @@ export const updateRepositories = (repos) => {
 	};
 };
 
+export const updateCollections = (collections) => {
+	return {
+		type: actionTypes.UPDATE_COLLECTIONS,
+		collections: collections,
+	};
+};
+
 export const apiCallPending = () => {
 	return {
 		type: actionTypes.COLLECTION_PENDING,

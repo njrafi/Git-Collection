@@ -63,6 +63,7 @@ export const loginAsync = (githubUserName, firebaseUser) => {
 				//TODO: filter specific data of githubUser
 				dispatch(login(res.user.githubUser, firebaseUser));
 				dispatch(actionCreators.getRepositoriesAsync(githubUserName));
+				dispatch(actionCreators.updateCollections(res.user.collections));
 				return res;
 			})
 			.catch((error) => {

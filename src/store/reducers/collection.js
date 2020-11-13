@@ -82,6 +82,11 @@ const collectionReducer = (state = initialState, action) => {
 			newState.pending = false;
 			SyncOccupiedRepositories(newState);
 			break;
+		case actionTypes.UPDATE_COLLECTIONS:
+			newState.collections = [...action.collections];
+			newState.pending = false;
+			SyncOccupiedRepositories(newState);
+			break;
 		case actionTypes.ADD_TO_COLLECTION:
 			newState.collections.push({
 				...action.collection,
