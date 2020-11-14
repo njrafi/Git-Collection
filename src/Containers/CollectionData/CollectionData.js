@@ -42,6 +42,7 @@ class CollectionData extends Component {
 		addedRepos: [],
 		availableRepos: [],
 		formIsValid: false,
+		collectionIsValid: false,
 		isEditCollection: false,
 		editingCollectionCreatedAt: null,
 	};
@@ -108,7 +109,7 @@ class CollectionData extends Component {
 			updatedCollectionForm[formKey].validation
 		);
 		updatedCollectionForm[formKey].touched = true;
-		let formIsValid = this.state.addedRepos.length > 0;
+		let formIsValid = true;
 		for (let key in updatedCollectionForm)
 			formIsValid = formIsValid && updatedCollectionForm[key].valid;
 
@@ -117,6 +118,7 @@ class CollectionData extends Component {
 		this.setState({
 			orderForm: updatedCollectionForm,
 			formIsValid: formIsValid,
+			collectionIsValid: formIsValid && this.state.addedRepos.length > 0,
 		});
 	};
 
@@ -141,7 +143,7 @@ class CollectionData extends Component {
 		this.setState({
 			availableRepos: availableRepos,
 			addedRepos: addedRepos,
-			formIsValid: this.state.formIsValid && addedRepos.length > 0,
+			collectionIsValid: this.state.formIsValid && addedRepos.length > 0,
 		});
 	};
 
@@ -153,7 +155,7 @@ class CollectionData extends Component {
 		this.setState({
 			availableRepos: availableRepos,
 			addedRepos: addedRepos,
-			formIsValid: this.state.formIsValid && addedRepos.length > 0,
+			collectionIsValid: this.state.formIsValid && addedRepos.length > 0,
 		});
 	};
 
@@ -214,6 +216,17 @@ class CollectionData extends Component {
 			<div className={styles.CollectionData}>
 				{topText}
 				{formElementsArray}
+				<MaterialButton
+					variant="contained"
+					color="primary"
+					size="large"
+					disabled={!this.state.collectionIsValid}
+					onClick={() => {
+						this.submitHandler();
+					}}
+				>
+					{buttonText}
+				</MaterialButton>
 				<SimpleCard>
 					<h2>Added Repos </h2>
 					{addedRepos}
@@ -222,16 +235,6 @@ class CollectionData extends Component {
 					<h2>Available Repos </h2>
 					{availableRepos}
 				</SimpleCard>
-				<Button
-					buttonType="Success"
-					disabled={!this.state.formIsValid}
-					onClick={() => {
-						this.submitHandler();
-					}}
-				>
-					{buttonText}
-				</Button>
-				{/* </form> */}
 			</div>
 		);
 	}
