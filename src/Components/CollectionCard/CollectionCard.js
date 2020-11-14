@@ -53,13 +53,18 @@ class CollectionCard extends Component {
 		if (this.props.collection.repos != null)
 			repos = this.props.collection.repos.map((repo, index) => {
 				return (
-					<Paper
-						variant="outlined"
-						key={repo.id}
-						style={{ margin: "10px", padding: "10px", textAlign: "center" }}
-					>
-						<b>{index + 1}.</b> {repo.name}
-					</Paper>
+					<div key={repo.id} style={{ cursor: "pointer" }}>
+						<Paper
+							onClick={() => {
+								window.open(repo.html_url);
+							}}
+							variant="outlined"
+							key={repo.id}
+							style={{ margin: "10px", padding: "10px", textAlign: "center" }}
+						>
+							<b>{index + 1}.</b> {repo.name}
+						</Paper>
+					</div>
 				);
 			});
 		let expandedSection = (

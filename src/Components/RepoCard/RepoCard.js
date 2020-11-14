@@ -13,20 +13,21 @@ class RepoCard extends Component {
 
 		commits = <CommitCard repo={this.props.repo} />;
 
-		if (this.props.repo.commits != null)
-			commits = this.props.repo.commits.map((commit) => {
-				return (
-					<div>
-						<div>
-							<b>Commiter:</b> {commit.name}
-						</div>
-						<div>
-							<b>TimeStamp</b> {commit.timestamp}
-						</div>
-						<br />
-					</div>
-				);
-			});
+		let goToGithubButton = (
+			<div style={{ marginLeft: "10px", display: "inline-block" }}>
+				<Button
+					variant="contained"
+					color="secondary"
+					size="small"
+					onClick={() => {
+						window.open(this.props.repo.html_url);
+					}}
+				>
+					Go To Github Repo
+				</Button>
+			</div>
+		);
+
 		let expandedSection = (
 			<div style={{ marginTop: "10px" }}>
 				<Button
@@ -39,13 +40,14 @@ class RepoCard extends Component {
 				>
 					Hide Commits
 				</Button>
+				{goToGithubButton}
 				{commits}
 			</div>
 		);
 
 		if (!this.state.isExpanded)
 			expandedSection = (
-				<div style={{ marginTop: "10px" }}>
+				<div style={{ marginTop: "10px", display: "inline-block" }}>
 					<Button
 						variant="contained"
 						color="primary"
@@ -56,6 +58,7 @@ class RepoCard extends Component {
 					>
 						Show Commits
 					</Button>
+					{goToGithubButton}
 				</div>
 			);
 
