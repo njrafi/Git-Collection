@@ -207,6 +207,8 @@ class CollectionData extends Component {
 		if (this.state.isEditCollection) {
 			topText = <h2> Edit Collection Info</h2>;
 			buttonText = "Submit";
+			if (!this.state.editingCollectionCreatedAt)
+				return <h1 style={{ textAlign: "center" }}>Invalid Collection Id</h1>;
 		}
 		return (
 			<div className={styles.CollectionData}>
