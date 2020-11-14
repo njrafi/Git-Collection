@@ -55,6 +55,7 @@ class CollectionCard extends Component {
 			repos = this.props.collection.repos.map((repo, index) => {
 				return (
 					<Paper
+						variant="outlined"
 						key={repo.id}
 						style={{ margin: "10px", padding: "10px", textAlign: "center" }}
 					>

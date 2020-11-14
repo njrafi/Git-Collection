@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import CommitCard from "../CommitCard/CommitCard";
-import Button from "../UI/Button/Button";
+import { Button } from "@material-ui/core";
 const { default: SimpleCard } = require("../UI/SimpleCard/SimpleCard");
 
 class RepoCard extends Component {
@@ -28,9 +28,11 @@ class RepoCard extends Component {
 				);
 			});
 		let expandedSection = (
-			<div>
+			<div style={{ marginTop: "10px" }}>
 				<Button
-					buttonType="Danger"
+					variant="contained"
+					color="secondary"
+					size="small"
 					onClick={() => {
 						this.setState({ isExpanded: false });
 					}}
@@ -43,9 +45,11 @@ class RepoCard extends Component {
 
 		if (!this.state.isExpanded)
 			expandedSection = (
-				<div>
+				<div style={{ marginTop: "10px" }}>
 					<Button
-						buttonType="Success"
+						variant="contained"
+						color="primary"
+						size="small"
 						onClick={() => {
 							this.setState({ isExpanded: true });
 						}}
@@ -56,18 +60,20 @@ class RepoCard extends Component {
 			);
 
 		return (
-			<SimpleCard>
-				<div>
-					<b>name:</b> {this.props.repo.name}
-				</div>
-				<div>
-					<b>Language:</b> {this.props.repo.language}
-				</div>
-				<div>
-					<b>Occupied:</b> {this.props.repo.occupied ? "Yes" : "No"}
-				</div>
-				{expandedSection}
-			</SimpleCard>
+			<div style={{ textAlign: "center" }}>
+				<SimpleCard>
+					<div>
+						<b>name:</b> {this.props.repo.name}
+					</div>
+					<div>
+						<b>Language:</b> {this.props.repo.language}
+					</div>
+					<div>
+						<b>Occupied:</b> {this.props.repo.occupied ? "Yes" : "No"}
+					</div>
+					{expandedSection}
+				</SimpleCard>
+			</div>
 		);
 	}
 }
