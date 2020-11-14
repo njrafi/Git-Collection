@@ -3,6 +3,7 @@ import { Button, ButtonGroup } from "@material-ui/core";
 import { connect } from "react-redux";
 import * as actionCreators from "../../store/actions/index";
 import { withRouter } from "react-router";
+import Paper from "@material-ui/core/Paper";
 const { default: SimpleCard } = require("../UI/SimpleCard/SimpleCard");
 
 class CollectionCard extends Component {
@@ -51,14 +52,14 @@ class CollectionCard extends Component {
 		);
 
 		if (this.props.collection.repos != null)
-			repos = this.props.collection.repos.map((repo) => {
+			repos = this.props.collection.repos.map((repo, index) => {
 				return (
-					<div key={repo.id}>
-						<div>
-							<b>Name:</b> {repo.name}
-						</div>
-						<br />
-					</div>
+					<Paper
+						key={repo.id}
+						style={{ margin: "10px", padding: "10px", textAlign: "center" }}
+					>
+						<b>{index + 1}.</b> {repo.name}
+					</Paper>
 				);
 			});
 		let expandedSection = (
@@ -98,24 +99,28 @@ class CollectionCard extends Component {
 			);
 
 		return (
-			<SimpleCard>
+			<Paper style={{ padding: "5px", textAlign: "center" }}>
 				<div>
 					<b>Name: </b> {this.props.collection.name}
 				</div>
+				<br />
 				<div>
 					<b>Type: </b> {this.props.collection.type}
 				</div>
+				<br />
 				<div>
 					<b>Creation Date: </b>
 					{new Date(this.props.collection.createdAt).toLocaleDateString(
 						"en-US"
 					)}
 				</div>
+				<br />
 				<div>
 					<b>Total Repos: </b> {this.props.collection.repos.length}
 				</div>
+				<br />
 				{expandedSection}
-			</SimpleCard>
+			</Paper>
 		);
 	}
 }

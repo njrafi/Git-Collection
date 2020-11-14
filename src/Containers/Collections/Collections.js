@@ -1,6 +1,7 @@
 import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import Spinner from "../../Components/UI/Spinner/Spinner";
+import Grid from "@material-ui/core/Grid";
 import * as actionCreators from "../../store/actions/index";
 const { Component } = require("react");
 const {
@@ -13,13 +14,21 @@ const {
 class Collections extends Component {
 	render() {
 		let collectionCards = this.props.collections.map((collection, index) => {
-			return <CollectionCard key={index} collection={collection} />;
+			return (
+				<Grid key={index} item xs={12} sm={6} md={4}>
+					<CollectionCard collection={collection} />
+				</Grid>
+			);
 		});
 		if (this.props.apiCallPending) return <Spinner />;
 
 		return (
 			<div>
-				{collectionCards}
+				<div style={{ flexGrow: "1", padding: "20px" }}>
+					<Grid container spacing={3}>
+						{collectionCards}
+					</Grid>
+				</div>
 				<div style={{ textAlign: "center", marginBottom: "30px" }}>
 					<Button
 						variant="contained"
