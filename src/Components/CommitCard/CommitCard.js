@@ -35,36 +35,54 @@ class CommitCard extends React.Component {
 		errorMessage: null,
 		apiCallPending: false,
 	};
+
+	getAllCommits = () => {
+		return new Promise(async (resolve, reject) => {
+			let allCommits = [];
+			let page = 1;
+			let id = 1;
+			while (true) {
+				try {
+					let res = await fetch(
+						`https://api.github.com/repos/${this.props.repo.owner.login}/${this.props.repo.name}/commits?per_page=100&page=${page}`
+					);
+					if (res.status !== 200)
+						throw new Error("Error getting commit history");
+					let commitInfos = await res.json();
+					let commits = commitInfos.map((commitInfo) => {
+						id += 1;
+						return {
+							id: id,
+							committer: commitInfo.commit.author.name,
+							message: commitInfo.commit.message,
+							date: commitInfo.commit.author.date,
+						};
+					});
+					console.log(commits);
+					allCommits = [...allCommits, ...commits];
+					if (commits.length < 100) break;
+				} catch (error) {
+					reject(error);
+				}
+				page += 1;
+			}
+			console.log(allCommits);
+			resolve(allCommits);
+		});
+	};
 	componentDidMount() {
 		this.setState({
 			apiCallPending: true,
-		});
-		fetch(
-			`https://api.github.com/repos/${this.props.repo.owner.login}/${this.props.repo.name}/commits?per_page=100`
-		)
-			.then((res) => {
-				if (res.status !== 200) throw new Error("Error getting commit history");
-				return res.json();
-			})
-			.then((res) => {
-				if (res.error) {
-					throw res.error;
-				}
-				let commits = res.map((commitInfo, index) => {
-					return {
-						id: index + 1,
-						committer: commitInfo.commit.author.name,
-						message: commitInfo.commit.message,
-						date: commitInfo.commit.author.date,
-					};
-				});
-				console.log(commits);
-
+        });
+        
+        // TODO: Improve Pagination
+		this.getAllCommits()
+			.then((allCommits) => {
 				this.setState({
-					rows: commits,
+					rows: allCommits,
 					apiCallPending: false,
 				});
-				return res;
+				console.log("Got Commits");
 			})
 			.catch((error) => {
 				this.setState({
@@ -73,10 +91,13 @@ class CommitCard extends React.Component {
 				});
 				console.log(error);
 			});
+		console.log("Getting Commits");
 	}
 	render() {
 		if (this.state.errorMessage) return <h1>{this.state.errorMessage}</h1>;
 		if (this.state.apiCallPending) return <Spinner />;
+		if (this.state.rows.length == 0) return <h1>No rows</h1>;
+
 		return (
 			<div style={{ height: 700, width: "100%" }}>
 				<DataGrid
