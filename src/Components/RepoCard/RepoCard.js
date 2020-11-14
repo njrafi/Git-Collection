@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import CommitCard from "../CommitCard/CommitCard";
 import Button from "../UI/Button/Button";
 const { default: SimpleCard } = require("../UI/SimpleCard/SimpleCard");
 
@@ -9,6 +10,8 @@ class RepoCard extends Component {
 
 	render() {
 		let commits = <div>No Commit History</div>;
+
+		commits = <CommitCard repo={this.props.repo} />;
 
 		if (this.props.repo.commits != null)
 			commits = this.props.repo.commits.map((commit) => {
