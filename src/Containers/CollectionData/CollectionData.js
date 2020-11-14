@@ -83,6 +83,8 @@ class CollectionData extends Component {
 			addedRepos: addedRepos,
 			isEditCollection: true,
 			editingCollectionCreatedAt: collection.createdAt,
+			formIsValid: true,
+			collectionIsValid: true,
 		});
 	};
 
