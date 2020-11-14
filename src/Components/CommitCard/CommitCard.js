@@ -40,7 +40,7 @@ class CommitCard extends React.Component {
 		return new Promise(async (resolve, reject) => {
 			let allCommits = [];
 			let page = 1;
-			let id = 1;
+			let id = 0;
 			while (true) {
 				try {
 					let res = await fetch(
@@ -73,9 +73,9 @@ class CommitCard extends React.Component {
 	componentDidMount() {
 		this.setState({
 			apiCallPending: true,
-        });
-        
-        // TODO: Improve Pagination
+		});
+
+		// TODO: Improve Pagination
 		this.getAllCommits()
 			.then((allCommits) => {
 				this.setState({
@@ -99,7 +99,7 @@ class CommitCard extends React.Component {
 		if (this.state.rows.length == 0) return <h1>No rows</h1>;
 
 		return (
-			<div style={{ height: 700, width: "100%" }}>
+			<div style={{ height: 650, width: "100%" }}>
 				<DataGrid
 					rows={this.state.rows}
 					columns={this.state.columns}

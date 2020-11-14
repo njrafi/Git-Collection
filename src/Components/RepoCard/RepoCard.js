@@ -37,7 +37,7 @@ class RepoCard extends Component {
 						this.setState({ isExpanded: false });
 					}}
 				>
-					Hide
+					Hide Commits
 				</Button>
 				{commits}
 			</div>
@@ -54,7 +54,7 @@ class RepoCard extends Component {
 							this.setState({ isExpanded: true });
 						}}
 					>
-						Show
+						Show Commits
 					</Button>
 				</div>
 			);
