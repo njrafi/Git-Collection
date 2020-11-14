@@ -53,7 +53,7 @@ class CollectionData extends Component {
 		if (this.props.match.params.createdAt) {
 			let collectionEditing = this.props.collections.filter(
 				(collection) =>
-					collection.createdAt === this.props.match.params.createdAt
+					collection.createdAt == this.props.match.params.createdAt
 			);
 			isEditCollection = true;
 			console.log("CollectionData: componentDidMount", this.props.match.params);
