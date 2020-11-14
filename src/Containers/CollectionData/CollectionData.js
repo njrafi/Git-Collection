@@ -42,15 +42,49 @@ class CollectionData extends Component {
 		addedRepos: [],
 		availableRepos: [],
 		formIsValid: false,
+		isEditCollection: false,
+		editingCollectionCreatedAt: null,
 	};
 
 	componentDidMount() {
 		let availableRepos = [...this.props.repos];
+		let isEditCollection = false;
 		availableRepos = availableRepos.filter((repo) => !repo.occupied);
+		if (this.props.match.params.createdAt) {
+			let collectionEditing = this.props.collections.filter(
+				(collection) =>
+					collection.createdAt == this.props.match.params.createdAt
+			);
+			isEditCollection = true;
+			console.log("CollectionData: componentDidMount", this.props.match.params);
+			if (collectionEditing.length > 0) {
+				this.makeEditState(collectionEditing[0]);
+				return;
+			}
+		}
 		this.setState({
 			availableRepos: availableRepos,
+			isEditCollection: isEditCollection,
 		});
 	}
+
+	makeEditState = (collection) => {
+		let availableRepos = [...this.props.repos];
+		availableRepos = availableRepos.filter((repo) => !repo.occupied);
+		let name = collection.name;
+		let type = collection.type;
+		let addedRepos = collection.repos;
+		let newCollectionForm = { ...this.state.collectionFrom };
+		newCollectionForm.name.value = name;
+		newCollectionForm.type.value = type;
+		this.setState({
+			collectionFrom: newCollectionForm,
+			availableRepos: availableRepos,
+			addedRepos: addedRepos,
+			isEditCollection: true,
+			editingCollectionCreatedAt: collection.createdAt,
+		});
+	};
 
 	checkValidity(value, rules) {
 		let isValid = true;
@@ -91,7 +125,7 @@ class CollectionData extends Component {
 			{
 				name: this.state.collectionFrom.name.value,
 				type: this.state.collectionFrom.type.value,
-				createdAt: Date.now(),
+				createdAt: this.state.editingCollectionCreatedAt || Date.now(),
 				repos: this.state.addedRepos,
 			},
 			this.props.userToken
@@ -135,7 +169,7 @@ class CollectionData extends Component {
 			);
 		const availableRepos = this.state.availableRepos.map((repo, index) => {
 			return (
-				<h4 key={index}>
+				<h4 key={repo.id}>
 					{index + 1}. {repo.name}{" "}
 					<MaterialButton
 						variant="contained"
@@ -153,7 +187,7 @@ class CollectionData extends Component {
 
 		const addedRepos = this.state.addedRepos.map((repo, index) => {
 			return (
-				<h4 key={index}>
+				<h4 key={repo.id}>
 					{index + 1}. {repo.name}{" "}
 					<MaterialButton
 						variant="contained"
@@ -168,15 +202,15 @@ class CollectionData extends Component {
 				</h4>
 			);
 		});
+		let topText = <h2> Enter Collection Info</h2>;
+		let buttonText = "Add to collection";
+		if (this.state.isEditCollection) {
+			topText = <h2> Edit Collection Info</h2>;
+			buttonText = "Submit";
+		}
 		return (
 			<div className={styles.CollectionData}>
-				<h2> Enter Collection Info</h2>
-				{/* <form
-					onSubmit={(event) => {
-						event.preventDefault();
-						console.log("Submit Button Clicked");
-					}}
-				> */}
+				{topText}
 				{formElementsArray}
 				<SimpleCard>
 					<h2>Added Repos </h2>
@@ -193,7 +227,7 @@ class CollectionData extends Component {
 						this.submitHandler();
 					}}
 				>
-					Add
+					{buttonText}
 				</Button>
 				{/* </form> */}
 			</div>
@@ -204,6 +238,7 @@ const mapStateToProps = (state) => {
 	return {
 		repos: state.collectionReducer.repos,
 		userToken: state.authReducer.firebaseUser.uid,
+		collections: state.collectionReducer.collections,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

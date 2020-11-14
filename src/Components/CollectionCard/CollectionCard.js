@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, ButtonGroup } from "@material-ui/core";
 import { connect } from "react-redux";
 import * as actionCreators from "../../store/actions/index";
+import { withRouter } from "react-router";
 const { default: SimpleCard } = require("../UI/SimpleCard/SimpleCard");
 
 class CollectionCard extends Component {
@@ -9,12 +10,25 @@ class CollectionCard extends Component {
 		isExpanded: false,
 	};
 
+	goToEditCollection = () => {
+		this.props.history.push(
+			`collections/edit/${this.props.collection.createdAt}`
+		);
+	};
+
 	render() {
 		let repos = <div>No Repos</div>;
 		let editAndDeleteButton = (
 			<div style={{ display: "inline-block" }}>
 				<div style={{ marginLeft: "20px", display: "inline-block" }}>
-					<Button variant="contained" color="default" size="small">
+					<Button
+						variant="contained"
+						color="default"
+						size="small"
+						onClick={() => {
+							this.goToEditCollection();
+						}}
+					>
 						Edit
 					</Button>
 				</div>
@@ -119,4 +133,6 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CollectionCard);
+export default withRouter(
+	connect(mapStateToProps, mapDispatchToProps)(CollectionCard)
+);

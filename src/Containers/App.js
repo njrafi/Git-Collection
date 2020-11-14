@@ -22,6 +22,7 @@ class App extends Component {
 				<Route path="/login" component={AuthContainer} />
 				<Route path="/repos" component={Repos} />
 				<Route path="/collections/create" component={CollectionData} />
+                <Route path="/collections/edit/:createdAt" component={CollectionData} />
 				<Route path="/collections" component={Collections} />
 				<Route path="/" component={Home} />
 				<Route render={() => <h1>Are you lost?</h1>} />
