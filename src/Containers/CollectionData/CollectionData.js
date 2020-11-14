@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button as MaterialButton } from "@material-ui/core";
-import Button from "../../Components/UI/Button/Button";
 import Input from "../../Components/UI/Input/Input";
 import styles from "./CollectionData.module.css";
 import * as actionCreators from "../../store/actions/index";
@@ -54,7 +53,7 @@ class CollectionData extends Component {
 		if (this.props.match.params.createdAt) {
 			let collectionEditing = this.props.collections.filter(
 				(collection) =>
-					collection.createdAt == this.props.match.params.createdAt
+					collection.createdAt === this.props.match.params.createdAt
 			);
 			isEditCollection = true;
 			console.log("CollectionData: componentDidMount", this.props.match.params);

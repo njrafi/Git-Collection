@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { Button, ButtonGroup } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import * as actionCreators from "../../store/actions/index";
 import { withRouter } from "react-router";
 import Paper from "@material-ui/core/Paper";
-const { default: SimpleCard } = require("../UI/SimpleCard/SimpleCard");
 
 class CollectionCard extends Component {
 	state = {

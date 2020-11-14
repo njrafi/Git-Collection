@@ -96,7 +96,7 @@ class CommitCard extends React.Component {
 	render() {
 		if (this.state.errorMessage) return <h1>{this.state.errorMessage}</h1>;
 		if (this.state.apiCallPending) return <Spinner />;
-		if (this.state.rows.length == 0) return <h1>No rows</h1>;
+		if (this.state.rows.length === 0) return <h1>No rows</h1>;
 
 		return (
 			<div style={{ height: 650, width: "100%" }}>
